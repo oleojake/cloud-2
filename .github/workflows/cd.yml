@@ -21,8 +21,8 @@ jobs:
 
       - name: Configurar Git
         run: |
-          git config user.name "cd-user"
-          git config user.email "cd-user@my-app.com"
+          git config user.name "oleojake"
+          git config user.email "oleojake@gmail.com"
 
       - name: Deploy to GitHub Pages
         run: npm run deploy -- -r https://github.com/oleojake/cloud-2.git
