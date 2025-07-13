@@ -1,16 +1,23 @@
-name: CD workflow
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
       - main
 
+permissions:
+  pages: write
+  id-token: write
+
 jobs:
-  cd:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Install dependencies
@@ -19,10 +26,11 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Configurar Git
-        run: |
-          git config user.name "oleojake"
-          git config user.email "oleojake@gmail.com"
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
 
       - name: Deploy to GitHub Pages
-        run: npm run deploy -- -r https://github.com/oleojake/cloud-2.git
+        id: deployment
+        uses: actions/deploy-pages@v4
